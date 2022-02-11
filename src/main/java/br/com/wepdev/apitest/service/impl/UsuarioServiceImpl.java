@@ -4,6 +4,7 @@ import br.com.wepdev.apitest.model.Usuario;
 import br.com.wepdev.apitest.model.dto.UsuarioDTO;
 import br.com.wepdev.apitest.repositories.UsuarioRepository;
 import br.com.wepdev.apitest.service.UsuarioService;
+import br.com.wepdev.apitest.service.exceptions.DataIntegratyViolationException;
 import br.com.wepdev.apitest.service.exceptions.ObjetoNaoEncontradoException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario create(UsuarioDTO obj) {
+        findByEmail(obj);
         return repository.save(mapper.map(obj, Usuario.class));
+    }
+
+
+    private void findByEmail(UsuarioDTO obj){
+        Optional<Usuario> usuario = repository.findByEmail(obj.getEmail());
+        if(usuario.isPresent()){
+            throw new DataIntegratyViolationException("Email ja cadastrado no sistema");
+        }
     }
 }
