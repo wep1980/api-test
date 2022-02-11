@@ -25,7 +25,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario findById(Long id) {
         Optional<Usuario> obj = repository.findById(id);
-
         return obj.orElseThrow(() -> new ObjetoNaoEncontradoException("Objeto não encontrado"));
     }
 
