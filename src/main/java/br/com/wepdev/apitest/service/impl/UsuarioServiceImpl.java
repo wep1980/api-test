@@ -7,6 +7,7 @@ import br.com.wepdev.apitest.service.exceptions.ObjetoNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,5 +21,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         Optional<Usuario> obj = repository.findById(id);
 
         return obj.orElseThrow(() -> new ObjetoNaoEncontradoException("Objeto não encontrado"));
+    }
+
+    @Override
+    public List<Usuario> findAll(){
+        return repository.findAll();
     }
 }
