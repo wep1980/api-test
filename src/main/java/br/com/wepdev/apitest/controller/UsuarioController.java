@@ -48,4 +48,10 @@ public class UsuarioController {
         Usuario newObj = service.update(obj);
         return ResponseEntity.ok().body(mapper.map(newObj, UsuarioDTO.class));
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<UsuarioDTO> delete(@PathVariable Long id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
