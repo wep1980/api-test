@@ -40,6 +40,12 @@ public class UsuarioController {
         Usuario newObj = service.create(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();// Passando URi de acesso ao novo objeto
         return ResponseEntity.created(uri).build();
+    }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<UsuarioDTO> update(@PathVariable Long id, @RequestBody UsuarioDTO obj){
+        obj.setId(id); // Grante que o id do obj e o mesmo da URL
+        Usuario newObj = service.update(obj);
+        return ResponseEntity.ok().body(mapper.map(newObj, UsuarioDTO.class));
     }
 }
