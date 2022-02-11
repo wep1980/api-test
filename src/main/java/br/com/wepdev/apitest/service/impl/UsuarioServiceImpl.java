@@ -51,7 +51,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         repository.deleteById(id);
     }
 
-
     private void findByEmail(UsuarioDTO obj){
         Optional<Usuario> usuario = repository.findByEmail(obj.getEmail());
         if(usuario.isPresent() && !usuario.get().getId().equals(obj.getId())){ // verifica se o id ja cadastrado e diferente do Id que veio por parametro
