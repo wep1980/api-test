@@ -159,6 +159,17 @@ class UsuarioServiceImplTest {
         Mockito.verify(repository, Mockito.times(1)).deleteById(Mockito.anyLong());
     }
 
+    @Test
+    void deveriaLancarObjetoNaoEncontradoAoDeletarUmUsuario(){
+        Mockito.when(repository.findById(Mockito.anyLong())).thenThrow(new ObjetoNaoEncontradoException("Objeto não encontrado"));// Quando o findById for chamado com qualquer valor inteiro
+        try {
+             service.delete(ID);
+        }catch (Exception ex){
+           assertEquals(ObjetoNaoEncontradoException.class, ex.getClass());
+           assertEquals("Objeto não encontrado", ex.getMessage());
+        }
+    }
+
     private void iniciarUsuario(){
         usuarioUm = new Usuario(ID, NOME, EMAIL, SENHA);
         usuarioDois = new Usuario(ID, NOME, EMAIL, SENHA);
