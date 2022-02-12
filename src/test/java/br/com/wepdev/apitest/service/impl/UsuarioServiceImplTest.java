@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,7 +36,8 @@ class UsuarioServiceImplTest {
     @Mock // Anotacão para criar um Mock do ModelMapper
     private ModelMapper mapper;
 
-    private Usuario usuario;
+    private Usuario usuarioUm;
+    private Usuario usuarioDois;
     private UsuarioDTO usuarioDTO;
     private Optional<Usuario> optionalUsuario;
 
@@ -76,7 +78,19 @@ class UsuarioServiceImplTest {
     }
 
     @Test
-    void findAll() {
+    void deveriaBuscarUmaListaDeUsuarios() {
+        Mockito.when(repository.findAll()).thenReturn(List.of(usuarioUm)); // Retorna uma lista de 2 usuarios
+
+        List<Usuario> response = service.findAll(); // chamando o metodo do service
+
+        assertNotNull(response); // Verifica se a resposta não e nula
+        assertEquals(1, response.size()); // verificando se o tamanho da lista e de 2 elementos
+        assertEquals(Usuario.class, response.get(0).getClass()); // Verifica se o objeto da posição 0 e do tipo Usario
+
+        assertEquals(ID, response.get(0).getId()); // verifica se o elemento da posição 0 do response tem o mesmo ID do elemento passado na lista
+        Assertions.assertEquals(NOME, response.get(0).getNome()); // Assegura que o nome passado e o mesmo nome do response que esta na posição 0
+        Assertions.assertEquals(EMAIL, response.get(0).getEmail()); // Assegura que o email passado e o mesmo email do response que esta na posição 0
+        Assertions.assertEquals(SENHA, response.get(0).getSenha()); // Assegura que a senha passado e a mesmo senha do response que esta na posição 0
     }
 
     @Test
@@ -92,7 +106,8 @@ class UsuarioServiceImplTest {
     }
 
     private void iniciarUsuario(){
-        usuario = new Usuario(ID, NOME, EMAIL, SENHA);
+        usuarioUm = new Usuario(ID, NOME, EMAIL, SENHA);
+        usuarioDois = new Usuario(ID, NOME, EMAIL, SENHA);
         usuarioDTO = new UsuarioDTO(ID, NOME, EMAIL, SENHA);
         optionalUsuario = Optional.of(new Usuario(ID, NOME, EMAIL, SENHA));
     }
