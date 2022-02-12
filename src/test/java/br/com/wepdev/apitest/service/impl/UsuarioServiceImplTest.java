@@ -120,8 +120,6 @@ class UsuarioServiceImplTest {
            assertEquals(DataIntegratyViolationException.class, ex.getClass()); // Assegura que a exception lançada e da mesma classe
            assertEquals("Email ja cadastrado no sistema", ex.getMessage()); // Assegura que a mensagem de exception é a mesma passada no mock
         }
-
-
     }
 
     @Test
@@ -136,7 +134,20 @@ class UsuarioServiceImplTest {
         Assertions.assertEquals(NOME, response.getNome()); // Assegura que o nome passado e o mesmo nome do response
         Assertions.assertEquals(EMAIL, response.getEmail()); // Assegura que o email passado e o mesmo email do response
         Assertions.assertEquals(SENHA, response.getSenha()); // Assegura que a senha passado e a mesmo senha do response
+    }
 
+
+    @Test
+    void deveriaLancarUmaDataIntegrityViolationExceptionAoFazerUpdateDeUmUsuario() {
+        Mockito.when(repository.findByEmail(Mockito.anyString())).thenReturn(optionalUsuario); // Resposta mockada
+
+        try {
+            optionalUsuario.get().setId(2L); // Alterando o ID para acontecer o erro, pois se nao for trocado a lógica do metedo entende que esta sendo feita um update
+            service.update(usuarioDTO);
+        }catch (Exception ex){
+            assertEquals(DataIntegratyViolationException.class, ex.getClass()); // Assegura que a exception lançada e da mesma classe
+            assertEquals("Email ja cadastrado no sistema", ex.getMessage()); // Assegura que a mensagem de exception é a mesma passada no mock
+        }
     }
 
     @Test
