@@ -125,7 +125,18 @@ class UsuarioServiceImplTest {
     }
 
     @Test
-    void update() {
+    void deveriaFazerUpdateDeUmUsuario() {
+        Mockito.when(repository.save(Mockito.any())).thenReturn(usuarioUm); // Resposta mockada
+
+        Usuario response = service.update(usuarioDTO); // Chamando o metodo create do service
+
+        assertNotNull(response); // Verifica se a resposta não e nula
+        assertEquals(Usuario.class, response.getClass()); // Verifica se o objeto e do tipo Usario
+        Assertions.assertEquals(ID, response.getId()); // Assegura que o ID passado e o mesmo Id do response
+        Assertions.assertEquals(NOME, response.getNome()); // Assegura que o nome passado e o mesmo nome do response
+        Assertions.assertEquals(EMAIL, response.getEmail()); // Assegura que o email passado e o mesmo email do response
+        Assertions.assertEquals(SENHA, response.getSenha()); // Assegura que a senha passado e a mesmo senha do response
+
     }
 
     @Test
