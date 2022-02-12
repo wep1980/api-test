@@ -151,7 +151,12 @@ class UsuarioServiceImplTest {
     }
 
     @Test
-    void delete() {
+    void deveriaDeletarUmUsuario() {
+        Mockito.when(repository.findById(Mockito.anyLong())).thenReturn(optionalUsuario);
+        Mockito.doNothing().when(repository).deleteById(Mockito.anyLong()); // Nao faça nada quando o deleteById for chamado passando um valor Long
+
+        service.delete(ID);
+        Mockito.verify(repository, Mockito.times(1)).deleteById(Mockito.anyLong());
     }
 
     private void iniciarUsuario(){
